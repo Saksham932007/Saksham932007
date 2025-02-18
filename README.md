@@ -1,4 +1,4 @@
-<img src="readmefile.png" alt="GitHub Banner" width="100%"
+<img src="readmefile.png" alt="GitHub Banner" width="100%" />
 # 💫 About Me:
 🔭 I’m currently working on Web3 Project<br>🌱 I’m currently learning blockchain<br>👯 I’m looking to collaborate on the Web3 Project<br>🤝 I’m looking for help with React<br>💬 Ask me about Blockchain backend development<br>⚡ Fun fact: I won the Valorant Premier league.
 
