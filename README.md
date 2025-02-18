@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./assets/readmefile.png" alt="Banner" width="100%">
+</p>
+
 # 💫 About Me:
 🔭 I’m currently working on Web3 Project<br>🌱 I’m currently learning blockchain<br>👯 I’m looking to collaborate on the Web3 Project<br>🤝 I’m looking for help with React<br>💬 Ask me about Blockchain backend development<br>⚡ Fun fact: I won the Valorant Premier league.
 
