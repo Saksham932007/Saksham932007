@@ -1,4 +1,4 @@
-(https://github.com/Saksham932007/Saksham932007/blob/main/1.gif)
+(![mishmanners gaming room - gif of my actual gaming room setup](https://github.com/Saksham932007/Saksham932007/blob/main/1.gif))
 <h1 align="center">Hi there, I'm Saksham Kapoor 👋</h1>
 <h3 align="center">A passionate Full-Stack Developer from Delhi, India 🇮🇳</h3>
 
