@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/Saksham932007/Saksham932007/blob/main/1.gif" alt="mishmanners gaming room - gif of my actual gaming room setup" width="70%" />
+  <img src="https://github.com/Saksham932007/Saksham932007/blob/main/1.gif" alt="mishmanners gaming room - gif of my actual gaming room setup" width="100%" />
 </p>
 <h1 align="center">Hi there, I'm Saksham Kapoor 👋</h1>
 <h3 align="center">A passionate Full-Stack Developer from Delhi, India 🇮🇳</h3>
