@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="Create_a_highenergy_202507261856_29nqq.mp4" alt="Video Preview GIF">
+</p>
 <h1 align="center">Hi there, I'm Saksham Kapoor 👋</h1>
 <h3 align="center">A passionate Full-Stack Developer from Delhi, India 🇮🇳</h3>
 
