@@ -1,946 +1,703 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Saksham Kapoor - Backend & Systems Engineer | Rust, C, Go | Published Research | Korean Fluent">
-    <title>Saksham Kapoor | Systems Engineer</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Work+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-dark: #0a0a0a;
-            --bg-elevated: #151515;
-            --border: #2a2a2a;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --text-tertiary: #606060;
-            --accent: #ff4500;
-            --accent-dim: #ff450033;
-            --grid-color: #1a1a1a;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Work Sans', -apple-system, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-        
-        /* Grid background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(var(--grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.3;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 10, 10, 0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            z-index: 1000;
-            animation: slideDown 0.6s ease-out;
-        }
-        
-        nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 2rem;
-        }
-        
-        .logo {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 800;
-            font-size: 1.2rem;
-            color: var(--accent);
-            letter-spacing: -0.5px;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-        
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-        
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 8rem 0 4rem;
-            position: relative;
-        }
-        
-        .hero-content {
-            animation: fadeInUp 0.8s ease-out;
-        }
-        
-        .hero-label {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: var(--accent-dim);
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 2rem;
-        }
-        
-        h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -2px;
-        }
-        
-        .hero h1 span {
-            display: block;
-            color: var(--text-secondary);
-            font-size: clamp(2rem, 5vw, 4rem);
-        }
-        
-        .hero-subtitle {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            max-width: 700px;
-            font-weight: 300;
-        }
-        
-        .hero-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 3rem;
-        }
-        
-        .tag {
-            padding: 0.5rem 1rem;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-        }
-        
-        .tag:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-        
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            padding: 1rem 2rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-decoration: none;
-            border: 2px solid;
-            transition: all 0.3s ease;
-            display: inline-block;
-            cursor: pointer;
-        }
-        
-        .btn-primary {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #fff;
-        }
-        
-        .btn-primary:hover {
-            background: transparent;
-            color: var(--accent);
-        }
-        
-        .btn-secondary {
-            background: transparent;
-            border-color: var(--border);
-            color: var(--text-primary);
-        }
-        
-        .btn-secondary:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-        
-        /* Section Styles */
-        section {
-            padding: 6rem 0;
-            animation: fadeInUp 0.8s ease-out;
-            animation-fill-mode: both;
-        }
-        
-        section:nth-child(2) { animation-delay: 0.1s; }
-        section:nth-child(3) { animation-delay: 0.2s; }
-        section:nth-child(4) { animation-delay: 0.3s; }
-        
-        .section-header {
-            margin-bottom: 4rem;
-        }
-        
-        .section-number {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -1px;
-        }
-        
-        .section-description {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 600px;
-        }
-        
-        /* Research Highlight */
-        .research-card {
-            background: var(--bg-elevated);
-            border: 2px solid var(--accent);
-            padding: 3rem;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        
-        .research-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .research-badge {
-            display: inline-block;
-            padding: 0.4rem 1rem;
-            background: var(--accent);
-            color: #fff;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 1.5rem;
-        }
-        
-        .research-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            line-height: 1.3;
-        }
-        
-        .research-meta {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 1.5rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-        
-        .research-card p {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            line-height: 1.8;
-        }
-        
-        .research-links {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        /* Projects Grid */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-        
-        .project-card {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            padding: 2rem;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--accent);
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-        
-        .project-card:hover {
-            border-color: var(--accent);
-            transform: translateX(5px);
-        }
-        
-        .project-card:hover::before {
-            transform: scaleY(1);
-        }
-        
-        .project-tech {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .tech-tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            padding: 0.25rem 0.75rem;
-            background: var(--accent-dim);
-            color: var(--accent);
-            border: 1px solid var(--accent);
-        }
-        
-        .project-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-        
-        .project-card p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.7;
-        }
-        
-        .project-metrics {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            padding: 1rem;
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-        }
-        
-        .metric {
-            text-align: center;
-        }
-        
-        .metric-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent);
-            display: block;
-        }
-        
-        .metric-label {
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .project-links {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .project-link {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.3s ease;
-        }
-        
-        .project-link:hover {
-            color: var(--accent);
-        }
-        
-        /* Skills Section */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-        
-        .skill-category {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            padding: 2rem;
-        }
-        
-        .skill-category h3 {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .skill-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        
-        .skill-item {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-        
-        .skill-item::before {
-            content: '▸';
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-        }
-        
-        /* Contact Section */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 4rem;
-            align-items: start;
-        }
-        
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            transition: border-color 0.3s ease;
-        }
-        
-        .contact-item:hover {
-            border-color: var(--accent);
-        }
-        
-        .contact-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--text-tertiary);
-            min-width: 100px;
-        }
-        
-        .contact-value {
-            color: var(--text-primary);
-        }
-        
-        .contact-value a {
-            color: var(--text-primary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .contact-value a:hover {
-            color: var(--accent);
-        }
-        
-        .availability {
-            padding: 2rem;
-            background: var(--accent-dim);
-            border: 2px solid var(--accent);
-        }
-        
-        .availability h3 {
-            color: var(--accent);
-            margin-bottom: 1rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .availability p {
-            color: var(--text-secondary);
-            line-height: 1.8;
-        }
-        
-        /* Footer */
-        footer {
-            padding: 3rem 0;
-            text-align: center;
-            border-top: 1px solid var(--border);
-            color: var(--text-tertiary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-        }
-        
-        /* Animations */
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .hero {
-                padding: 6rem 0 3rem;
-            }
-            
-            h1 {
-                font-size: 3rem;
-            }
-            
-            .hero h1 span {
-                font-size: 2rem;
-            }
-            
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .cta-buttons {
-                flex-direction: column;
-            }
-            
-            .btn {
-                text-align: center;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saksham Kapoor | Backend &amp; Systems Engineer</title>
+<meta name="description" content="Saksham Kapoor — backend and systems engineer. Built an OS kernel, a Raft-replicated database and a benchmarked Redis-compatible server. Research preprint submitted. Seeking a software engineering internship.">
+<meta name="theme-color" content="#0b1220">
+<meta property="og:title" content="Saksham Kapoor | Backend & Systems Engineer">
+<meta property="og:description" content="Operating systems, databases and benchmarking research. Seeking a paid software engineering internship.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1220'/%3E%3Ctext x='32' y='43' font-family='monospace' font-size='30' font-weight='700' text-anchor='middle' fill='%236ea8ff'%3ESK%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script>document.documentElement.classList.add('js');</script>
+
+<style>
+:root{
+  --bg:#0b1220;
+  --bg-2:#0e1627;
+  --card:#111a2e;
+  --card-2:#152039;
+  --border:#1f2b45;
+  --border-2:#2a3a5e;
+  --text:#e8eefc;
+  --muted:#93a4c3;
+  --faint:#5d7399;
+  --blue:#6ea8ff;
+  --teal:#4fd1b8;
+  --blue-dim:rgba(110,168,255,.12);
+  --teal-dim:rgba(79,209,184,.12);
+  --radius:14px;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:'Work Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(110,168,255,.35)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:6px}
+
+/* ---------- Ambient background ---------- */
+.bg-fx{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.bg-fx::before{content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:48px 48px;
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 70% 20%,#000 20%,transparent 75%);
+  mask-image:radial-gradient(ellipse 80% 60% at 70% 20%,#000 20%,transparent 75%)}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;animation:float 18s ease-in-out infinite}
+.orb.a{width:520px;height:520px;background:rgba(56,120,255,.30);top:-120px;right:-80px}
+.orb.b{width:420px;height:420px;background:rgba(79,209,184,.16);bottom:-100px;left:-100px;animation-delay:-9s}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,50px)}}
+
+/* ---------- Progress + nav ---------- */
+.progress{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);
+  background:linear-gradient(90deg,var(--blue),var(--teal));z-index:1100}
+nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(11,18,32,.72);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);
+  animation:slideDown .7s cubic-bezier(.2,.8,.2,1) both}
+.wrap{max-width:1180px;margin:0 auto;padding:0 1.5rem}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font-family:var(--mono);font-weight:700;font-size:1.05rem;letter-spacing:-.3px}
+.logo b{color:var(--blue)}
+.nav-links{display:flex;gap:.4rem;list-style:none;align-items:center}
+.nav-links a{font-family:var(--mono);font-size:.8rem;color:var(--muted);padding:.5rem .8rem;border-radius:8px;transition:color .25s,background .25s;position:relative}
+.nav-links a:hover{color:var(--text);background:var(--blue-dim)}
+.nav-links a.active{color:var(--blue)}
+.nav-links a.active::after{content:'';position:absolute;left:.8rem;right:.8rem;bottom:2px;height:2px;border-radius:2px;background:var(--blue)}
+.nav-cta{border:1px solid var(--border-2);margin-left:.4rem}
+.nav-cta:hover{border-color:var(--blue)!important}
+.menu-btn{display:none;background:none;border:1px solid var(--border-2);color:var(--text);width:42px;height:42px;border-radius:10px;cursor:pointer;font-size:1.1rem}
+
+/* ---------- Layout helpers ---------- */
+section{padding:6.5rem 0;position:relative}
+.eyebrow{font-family:var(--mono);font-size:.78rem;color:var(--teal);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.9rem;display:flex;align-items:center;gap:.7rem}
+.eyebrow::after{content:'';height:1px;width:48px;background:linear-gradient(90deg,var(--teal),transparent)}
+h2{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:1rem}
+.lead{color:var(--muted);font-size:1.08rem;max-width:640px}
+.sec-head{margin-bottom:3.2rem}
+
+/* reveal on scroll */
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0s)}
+.js .reveal.in{opacity:1;transform:none}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--mono);font-size:.85rem;font-weight:600;padding:.95rem 1.5rem;border-radius:10px;border:1px solid var(--border-2);cursor:pointer;transition:transform .25s,box-shadow .25s,border-color .25s,background .25s;background:transparent;color:var(--text)}
+.btn:hover{transform:translateY(-2px);border-color:var(--blue)}
+.btn .arr{transition:transform .25s}
+.btn:hover .arr{transform:translateX(4px)}
+.btn-primary{background:linear-gradient(135deg,#4f8dff,#3b6fe0);border-color:transparent;color:#fff;box-shadow:0 10px 30px -10px rgba(79,141,255,.7)}
+.btn-primary:hover{box-shadow:0 14px 36px -10px rgba(79,141,255,.9);border-color:transparent}
+
+/* ---------- Hero ---------- */
+.hero{min-height:100vh;display:flex;align-items:center;padding:8.5rem 0 4rem}
+.hero .wrap{width:100%}
+.hero-grid{display:grid;grid-template-columns:1.25fr .85fr;gap:3.5rem;align-items:center}
+.status{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--mono);font-size:.76rem;color:var(--teal);background:var(--teal-dim);border:1px solid rgba(79,209,184,.35);padding:.45rem .9rem;border-radius:999px;margin-bottom:1.6rem}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 rgba(79,209,184,.7);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(79,209,184,.6)}70%{box-shadow:0 0 0 10px rgba(79,209,184,0)}100%{box-shadow:0 0 0 0 rgba(79,209,184,0)}}
+.hero h1{font-size:clamp(2.8rem,7vw,5.2rem);font-weight:700;line-height:1.02;letter-spacing:-.045em;margin-bottom:1rem}
+.hero h1 .grad{background:linear-gradient(100deg,var(--blue),var(--teal));-webkit-background-clip:text;background-clip:text;color:transparent}
+.typed-line{font-family:var(--mono);font-size:clamp(1.05rem,2.2vw,1.45rem);color:var(--muted);margin-bottom:1.6rem;min-height:2em}
+.typed-line .t{color:var(--text)}
+.caret{display:inline-block;width:9px;height:1.1em;background:var(--teal);vertical-align:-.15em;margin-left:3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hero p.sub{color:var(--muted);font-size:1.12rem;max-width:560px;margin-bottom:2.2rem}
+.cta-row{display:flex;flex-wrap:wrap;gap:.9rem;margin-bottom:2.8rem}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:620px;padding-top:1.8rem;border-top:1px solid var(--border)}
+.stat b{display:block;font-family:var(--mono);font-size:clamp(1.3rem,2.6vw,1.8rem);font-weight:700;color:var(--text)}
+.stat span{font-size:.72rem;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;line-height:1.3;display:block;margin-top:.2rem}
+
+/* stack visual */
+.stack-card{background:linear-gradient(180deg,var(--card),var(--bg-2));border:1px solid var(--border);border-radius:18px;padding:1.6rem;box-shadow:0 30px 80px -30px rgba(0,0,0,.7);position:relative}
+.stack-top{display:flex;align-items:center;gap:.5rem;margin-bottom:1.2rem}
+.stack-top i{width:10px;height:10px;border-radius:50%;background:#2a3a5e;display:block}
+.stack-top span{margin-left:auto;font-family:var(--mono);font-size:.72rem;color:var(--faint)}
+.layer{display:flex;align-items:center;justify-content:space-between;height:52px;border-radius:10px;margin-bottom:12px;padding:0 1rem;font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);border:1px solid var(--border);background:rgba(110,168,255,.04);animation:layerGlow 6s ease-in-out infinite;animation-delay:calc(var(--i)*.9s)}
+.layer:nth-child(2){margin-left:0}.layer.l2{margin-left:14px}.layer.l3{margin-left:28px}.layer.l4{margin-left:42px}.layer.l5{margin-left:56px;margin-bottom:0}
+.layer em{font-style:normal;font-size:.66rem;opacity:.0;color:var(--teal);letter-spacing:.04em;animation:tagShow 6s ease-in-out infinite;animation-delay:calc(var(--i)*.9s)}
+@keyframes layerGlow{
+  0%,22%,100%{color:var(--faint);border-color:var(--border);background:rgba(110,168,255,.04);box-shadow:none}
+  8%,16%{color:#d6fff6;border-color:rgba(79,209,184,.7);background:rgba(79,209,184,.16);box-shadow:0 0 30px rgba(79,209,184,.25)}
+}
+@keyframes tagShow{0%,22%,100%{opacity:0}8%,16%{opacity:1}}
+.stack-foot{margin-top:1.2rem;font-family:var(--mono);font-size:.74rem;color:var(--faint);text-align:center}
+
+/* ---------- About ---------- */
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:3.5rem;align-items:start}
+.about-text p{color:var(--muted);margin-bottom:1.1rem;font-size:1.04rem}
+.about-text p strong{color:var(--text);font-weight:600}
+.facts{display:grid;gap:.9rem}
+.fact{display:flex;gap:1rem;align-items:flex-start;padding:1.1rem 1.2rem}
+.fact .k{font-family:var(--mono);font-size:.72rem;color:var(--teal);text-transform:uppercase;letter-spacing:.1em;min-width:92px;padding-top:.2rem}
+.fact .v{color:var(--text);font-size:.97rem}
+.fact .v small{display:block;color:var(--muted);font-size:.85rem;margin-top:.1rem}
+
+/* ---------- Cards with spotlight ---------- */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+.card::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(110,168,255,.14),transparent 45%)}
+.card:hover{border-color:var(--border-2)}
+.card:hover::before{opacity:1}
+
+/* ---------- Projects ---------- */
+.projects{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+.project{padding:1.8rem;display:flex;flex-direction:column}
+.project:hover{transform:translateY(-6px)}
+.p-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
+.p-num{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
+.p-kind{font-family:var(--mono);font-size:.68rem;color:var(--blue);background:var(--blue-dim);border:1px solid rgba(110,168,255,.3);padding:.2rem .6rem;border-radius:999px}
+.project h3{font-size:1.45rem;letter-spacing:-.02em;margin-bottom:.2rem}
+.p-sub{font-family:var(--mono);font-size:.74rem;color:var(--teal);margin-bottom:1rem}
+.project p{color:var(--muted);font-size:.95rem;margin-bottom:1.3rem}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1.3rem;margin-top:auto}
+.metric{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:.8rem .9rem}
+.metric b{display:block;font-family:var(--mono);font-size:1.25rem;color:var(--text)}
+.metric span{font-size:.68rem;color:var(--faint);text-transform:uppercase;letter-spacing:.07em;line-height:1.25;display:block}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.3rem}
+.tag{font-family:var(--mono);font-size:.7rem;color:var(--muted);border:1px solid var(--border);padding:.2rem .6rem;border-radius:6px;background:rgba(255,255,255,.02)}
+.plink{font-family:var(--mono);font-size:.82rem;color:var(--blue);display:inline-flex;gap:.5rem;align-items:center}
+.plink:hover{color:var(--teal)}
+.plink .arr{transition:transform .25s}.plink:hover .arr{transform:translateX(4px)}
+
+/* ---------- Research ---------- */
+.research{padding:2.6rem;display:grid;grid-template-columns:1.2fr .8fr;gap:3rem;border-color:rgba(110,168,255,.35);background:linear-gradient(135deg,#12203b,var(--card))}
+.badge{display:inline-flex;gap:.5rem;align-items:center;font-family:var(--mono);font-size:.72rem;color:var(--blue);background:var(--blue-dim);border:1px solid rgba(110,168,255,.4);padding:.35rem .8rem;border-radius:999px;margin-bottom:1.2rem}
+.research h3{font-size:clamp(1.5rem,3vw,2.1rem);letter-spacing:-.025em;line-height:1.2;margin-bottom:.9rem}
+.research p{color:var(--muted);margin-bottom:1.1rem}
+.r-meta{display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;font-family:var(--mono);font-size:.76rem;color:var(--faint);margin-bottom:1.6rem}
+.chart{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:1.4rem}
+.chart h4{font-family:var(--mono);font-size:.74rem;color:var(--faint);font-weight:500;text-transform:uppercase;letter-spacing:.09em;margin-bottom:1.2rem}
+.bar-row{margin-bottom:1.1rem}
+.bar-row:last-of-type{margin-bottom:.4rem}
+.bar-label{display:flex;justify-content:space-between;font-size:.84rem;color:var(--muted);margin-bottom:.4rem}
+.bar-label b{font-family:var(--mono);color:var(--text);white-space:nowrap;margin-left:.8rem}
+.bar{height:12px;border-radius:99px;background:rgba(255,255,255,.05);overflow:hidden}
+.bar span{display:block;height:100%;width:0;border-radius:99px;transition:width 1.4s cubic-bezier(.2,.8,.2,1) .2s}
+.bar.cost span{background:linear-gradient(90deg,#ff7a59,#ffb36b)}
+.bar.save span{background:linear-gradient(90deg,var(--teal),#7be8d2)}
+.in .bar span{width:var(--w)}
+.chart-note{font-size:.78rem;color:var(--faint);margin-top:1rem}
+.chart-note b{color:var(--teal);font-family:var(--mono)}
+
+/* ---------- Timeline ---------- */
+.timeline{position:relative;padding-left:2rem;display:grid;gap:1.4rem}
+.timeline::before{content:'';position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--blue),var(--teal),transparent)}
+.t-item{position:relative;padding:1.5rem 1.7rem}
+.t-item::after{content:'';position:absolute;left:calc(-2rem + 1px);top:1.9rem;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--blue);box-shadow:0 0 0 4px rgba(110,168,255,.12)}
+.t-item.now::after{background:var(--teal);border-color:var(--teal);animation:pulse 2s infinite}
+.t-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.4rem 1rem;margin-bottom:.6rem}
+.t-role{font-weight:600;font-size:1.08rem}
+.t-org{color:var(--blue);font-size:.93rem}
+.t-date{font-family:var(--mono);font-size:.76rem;color:var(--faint);padding-top:.25rem}
+.t-item ul{list-style:none;display:grid;gap:.45rem}
+.t-item li{color:var(--muted);font-size:.94rem;padding-left:1.1rem;position:relative}
+.t-item li::before{content:'▸';position:absolute;left:0;color:var(--teal);font-size:.8rem;top:.1rem}
+.edu{margin-top:2.4rem;display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+.edu .card{padding:1.5rem 1.7rem}
+.edu h4{font-family:var(--mono);font-size:.74rem;color:var(--teal);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.7rem;font-weight:500}
+.edu p{color:var(--muted);font-size:.93rem}
+.edu p strong{color:var(--text);font-weight:600}
+
+/* ---------- Skills ---------- */
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem}
+.skill{padding:1.6rem}
+.skill h3{font-family:var(--mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;color:var(--teal);font-weight:600;margin-bottom:1.1rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font-size:.84rem;color:var(--text);background:var(--bg-2);border:1px solid var(--border);padding:.4rem .8rem;border-radius:8px;transition:border-color .25s,transform .25s,color .25s;cursor:default}
+.chip:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px)}
+.js .skill .chip{opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease,border-color .25s,color .25s;transition-delay:calc(var(--c)*45ms)}
+.js .skill.in .chip{opacity:1;transform:none}
+.js .skill.in .chip:hover{transform:translateY(-2px);transition-delay:0s}
+
+/* ---------- Contact ---------- */
+.contact{padding:2.6rem;display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;background:linear-gradient(135deg,#12203b,var(--card));border-color:rgba(110,168,255,.3)}
+.contact h2{margin-bottom:.8rem}
+.contact p.lead{margin-bottom:1.8rem}
+.c-list{display:grid;gap:.8rem}
+.c-item{display:flex;align-items:center;gap:1rem;padding:.95rem 1.1rem;background:var(--bg-2);border:1px solid var(--border);border-radius:12px;transition:border-color .25s,transform .25s}
+.c-item:hover{border-color:var(--blue);transform:translateX(4px)}
+.c-item .k{font-family:var(--mono);font-size:.72rem;color:var(--faint);min-width:76px;text-transform:uppercase;letter-spacing:.08em}
+.c-item .v{font-size:.95rem;word-break:break-all}
+.looking{align-self:start;padding:1.6rem;background:var(--teal-dim);border:1px solid rgba(79,209,184,.35);border-radius:14px}
+.looking h3{font-family:var(--mono);font-size:.78rem;color:var(--teal);text-transform:uppercase;letter-spacing:.12em;margin-bottom:1rem}
+.looking ul{list-style:none;display:grid;gap:.7rem}
+.looking li{color:var(--muted);font-size:.94rem;padding-left:1.2rem;position:relative}
+.looking li::before{content:'✓';position:absolute;left:0;color:var(--teal)}
+.looking li strong{color:var(--text);font-weight:600}
+
+footer{padding:2.4rem 0;border-top:1px solid var(--border);color:var(--faint);font-family:var(--mono);font-size:.78rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.6rem}
+
+.to-top{position:fixed;right:1.4rem;bottom:1.4rem;width:46px;height:46px;border-radius:12px;border:1px solid var(--border-2);background:rgba(17,26,46,.9);color:var(--text);cursor:pointer;font-size:1.1rem;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s,transform .3s,border-color .3s;z-index:900}
+.to-top.show{opacity:1;transform:none;pointer-events:auto}
+.to-top:hover{border-color:var(--blue)}
+.toast{position:fixed;left:50%;bottom:2rem;transform:translate(-50%,20px);background:var(--card-2);border:1px solid var(--teal);color:var(--text);font-family:var(--mono);font-size:.8rem;padding:.7rem 1.1rem;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:1200}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:none;opacity:1}}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1000px){
+  .hero-grid,.about-grid,.research,.contact{grid-template-columns:1fr}
+  .projects{grid-template-columns:1fr 1fr}
+  .skills{grid-template-columns:1fr 1fr}
+  .stack-card{max-width:460px}
+}
+@media (max-width:720px){
+  section{padding:4.5rem 0}
+  .menu-btn{display:block}
+  .nav-links{position:absolute;top:68px;left:0;right:0;flex-direction:column;align-items:stretch;gap:.2rem;padding:1rem 1.5rem 1.4rem;background:rgba(11,18,32,.97);border-bottom:1px solid var(--border);transform:translateY(-12px);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+  .nav-links.open{opacity:1;transform:none;pointer-events:auto}
+  .nav-links a{padding:.8rem 1rem}
+  .nav-cta{margin-left:0}
+  .projects,.skills,.edu{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .research,.contact{padding:1.6rem}
+  .fact{flex-direction:column;gap:.3rem}
+  .hero{padding-top:7rem}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .js .reveal,.js .skill .chip{opacity:1;transform:none}
+  .bar span{width:var(--w)}
+  .layer{color:var(--muted)}
+}
+</style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="container">
-            <div class="logo">SK.dev</div>
-            <ul class="nav-links">
-                <li><a href="#research">Research</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+<div class="bg-fx" aria-hidden="true"><div class="orb a"></div><div class="orb b"></div></div>
+<div class="progress" id="progress"></div>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="logo">SK<b>.</b>dev</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="top">
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="status reveal"><span class="dot"></span>Open to internships &amp; entry-level roles</div>
+      <h1 class="reveal" style="--d:.08s">Saksham<br><span class="grad">Kapoor</span></h1>
+      <div class="typed-line reveal" style="--d:.16s">I build <span class="t" id="typed">operating systems</span><span class="caret"></span></div>
+      <p class="sub reveal" style="--d:.24s">Backend and systems engineer. I started writing code at 12 to understand what happens beneath the app, and I've since built an OS kernel, a Raft-replicated database and a benchmarked Redis-compatible server.</p>
+      <div class="cta-row reveal" style="--d:.32s">
+        <a href="#projects" class="btn btn-primary">View projects <span class="arr">→</span></a>
+        <a href="Saksham_Kapoor_Resume.pdf" class="btn" download>Download résumé <span class="arr">↓</span></a>
+        <a href="https://github.com/Saksham932007" target="_blank" rel="noopener" class="btn">GitHub <span class="arr">↗</span></a>
+      </div>
+      <div class="stats reveal" style="--d:.4s">
+        <div class="stat"><b data-count="633">0</b><span>In-kernel<br>assertions</span></div>
+        <div class="stat"><b data-count="308">0</b><span>Database<br>tests</span></div>
+        <div class="stat"><b data-count="29520" data-sep="1">0</b><span>Benchmark<br>runs</span></div>
+        <div class="stat"><b data-count="6">0</b><span>Kernel bugs<br>found by fuzzing</span></div>
+      </div>
+    </div>
+
+    <div class="reveal" style="--d:.3s">
+      <div class="stack-card" aria-label="Diagram of a software stack from application down to hardware">
+        <div class="stack-top"><i></i><i></i><i></i><span>understand the layer below</span></div>
+        <div class="layer l1" style="--i:0">Application<em>← where most start</em></div>
+        <div class="layer l2" style="--i:1">Services &amp; APIs<em>← backend work</em></div>
+        <div class="layer l3" style="--i:2">Runtime<em>← Tokio · .NET</em></div>
+        <div class="layer l4" style="--i:3">Kernel<em>← StratumOS</em></div>
+        <div class="layer l5" style="--i:4">Hardware<em>← drivers · SMP</em></div>
+        <div class="stack-foot">$ descend --until it makes sense</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-text">
+      <div class="sec-head">
+        <div class="eyebrow reveal">01 · About</div>
+        <h2 class="reveal" style="--d:.05s">Curious about what runs underneath.</h2>
+      </div>
+      <p class="reveal" style="--d:.1s">My curiosity has taken me steadily down the stack and back up with more rigor each time. I started with <strong>operating systems</strong>, moved to <strong>data systems</strong>, then turned measurement into <strong>research</strong>.</p>
+      <p class="reveal" style="--d:.15s">Since January 2025 I've also worked as a <strong>full-stack developer</strong> at a software consultancy, owning UI and backend work (schemas, migrations, service layers and APIs) across multiple client products.</p>
+      <p class="reveal" style="--d:.2s">I mentor open-source contributors through GirlScript Summer of Code and student founders through E-Cell IIT Bombay, and I lead a 17-member entrepreneurship cell at the Institute of Management Education.</p>
+    </div>
+    <div class="facts">
+      <div class="card fact reveal" style="--d:.1s"><span class="k">Studying</span><span class="v">BCA (AI/ML), CCSU<small>Final year · graduating July 2027</small></span></div>
+      <div class="card fact reveal" style="--d:.16s"><span class="k">Focus</span><span class="v">Backend, systems &amp; infrastructure<small>C · Rust · C# · Python · TypeScript</small></span></div>
+      <div class="card fact reveal" style="--d:.22s"><span class="k">Based in</span><span class="v">Delhi, India<small>Open to Delhi NCR, Bengaluru, Hyderabad, Pune or remote</small></span></div>
+      <div class="card fact reveal" style="--d:.28s"><span class="k">Looking for</span><span class="v">Paid SWE internship<small>Backend, systems or infrastructure</small></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow reveal">02 · Projects</div>
+      <h2 class="reveal" style="--d:.05s">Systems built from first principles.</h2>
+      <p class="lead reveal" style="--d:.1s">Three projects, each tested and measured. Every number below comes from the repository.</p>
+    </div>
+
+    <div class="projects">
+      <!-- StratumOS -->
+      <article class="card project reveal" style="--d:.05s">
+        <div class="p-top"><span class="p-num">01</span><span class="p-kind">Operating system</span></div>
+        <h3>StratumOS</h3>
+        <div class="p-sub">Kernel &amp; bootloader from scratch</div>
+        <p>BIOS bootloader and kernel that take a machine from 16-bit real mode to a preemptive, paged system with copy-on-write fork, exec from FAT16, ring-3 processes, 4-CPU SMP and an e1000 network stack (ARP, IPv4, ICMP, UDP, TCP).</p>
+        <div class="tags"><span class="tag">C</span><span class="tag">x86 asm</span><span class="tag">QEMU</span><span class="tag">libFuzzer</span><span class="tag">RISC-V</span></div>
+        <div class="metrics">
+          <div class="metric"><b data-count="32.5" data-dec="1" data-prefix="~" data-suffix="K">0</b><span>Lines of code</span></div>
+          <div class="metric"><b data-count="633">0</b><span>In-kernel assertions</span></div>
+          <div class="metric"><b data-count="40000" data-sep="1">0</b><span>Fuzzed syscalls</span></div>
+          <div class="metric"><b data-count="6">0</b><span>Bugs found</span></div>
         </div>
-    </nav>
+        <a class="plink" href="https://github.com/Saksham932007/StratumOS" target="_blank" rel="noopener">View on GitHub <span class="arr">→</span></a>
+      </article>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-label">Available for Hire</div>
-                <h1>
-                    Saksham Kapoor
-                    <span>Systems Engineer</span>
-                </h1>
-                <p class="hero-subtitle">
-                    Building high-performance backend systems and distributed infrastructure. 
-                    Published research on concurrent systems. Korean fluent.
-                </p>
-                <div class="hero-tags">
-                    <span class="tag">Rust</span>
-                    <span class="tag">C</span>
-                    <span class="tag">Go</span>
-                    <span class="tag">Python</span>
-                    <span class="tag">한국어 (Korean)</span>
-                    <span class="tag">Distributed Systems</span>
-                    <span class="tag">Linux Internals</span>
-                </div>
-                <div class="cta-buttons">
-                    <a href="#contact" class="btn btn-primary">Get In Touch</a>
-                    <a href="https://github.com/Saksham932007" target="_blank" class="btn btn-secondary">View GitHub</a>
-                </div>
-            </div>
+      <!-- KestrelCache -->
+      <article class="card project reveal" style="--d:.12s">
+        <div class="p-top"><span class="p-num">02</span><span class="p-kind">Database</span></div>
+        <h3>KestrelCache</h3>
+        <div class="p-sub">Persistent key-value database · .NET 9</div>
+        <p>Two storage engines (Bitcask-style log and an LSM tree with WAL, SSTables, Bloom filters and a block cache), a Redis-protocol server that works with unmodified redis-cli, and Raft replication with snapshots and joint-consensus membership changes.</p>
+        <div class="tags"><span class="tag">C#</span><span class="tag">LSM tree</span><span class="tag">Raft</span><span class="tag">Bloom filters</span></div>
+        <div class="metrics">
+          <div class="metric"><b data-count="308">0</b><span>Tests, CI on 3 OSes</span></div>
+          <div class="metric"><b data-count="662" data-suffix="K">0</b><span>GET ops/s</span></div>
+          <div class="metric"><b data-count="392" data-suffix="×">0</b><span>Throughput from batched fsync</span></div>
+          <div class="metric"><b data-count="1.4" data-dec="1" data-suffix="×">0</b><span>Of Redis 7 GET rate</span></div>
         </div>
-    </section>
+        <a class="plink" href="https://github.com/Saksham932007/KestrelCache" target="_blank" rel="noopener">View on GitHub <span class="arr">→</span></a>
+      </article>
 
-    <!-- Research Section -->
-    <section id="research">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-number">01</div>
-                <h2>Published Research</h2>
-                <p class="section-description">
-                    Independent research on concurrent systems performance with rigorous statistical methodology.
-                </p>
-            </div>
-            
-            <div class="research-card">
-                <div class="research-badge">Peer Review Pending</div>
-                <h3>Telemetry Overhead Under Concurrency in a Rust/Tokio Key-Value Server</h3>
-                <div class="research-meta">
-                    <span>📅 April 2026</span>
-                    <span>🔬 Independent Research</span>
-                    <span>📊 1,440 Data Points</span>
-                </div>
-                <p>
-                    Exploratory benchmark of six telemetry collection strategies in a concurrent key-value server, 
-                    evaluated across 100-1,000 concurrent clients. Demonstrated allocation-free sharded strategy 
-                    with no statistically significant throughput difference from uninstrumented baseline at 400-600 
-                    concurrent clients using Mann-Whitney U tests, Bonferroni correction, and Shapiro-Wilk normality testing.
-                </p>
-                <div class="research-links">
-                    <a href="https://doi.org/10.5281/zenodo.19696522" target="_blank" class="btn btn-primary">Read Paper (DOI)</a>
-                    <a href="https://github.com/Saksham932007/RustRedis" target="_blank" class="btn btn-secondary">View Code</a>
-                </div>
-            </div>
+      <!-- RustRedis -->
+      <article class="card project reveal" style="--d:.19s">
+        <div class="p-top"><span class="p-num">03</span><span class="p-kind">Research</span></div>
+        <h3>RustRedis</h3>
+        <div class="p-sub">Redis-compatible server &amp; benchmark study</div>
+        <p>A ~3,500-line Rust/Tokio server with 8 interchangeable metrics collectors, designed as a factorial experiment to isolate what per-command observability costs on a concurrent server. It is the instrument behind the paper below.</p>
+        <div class="tags"><span class="tag">Rust</span><span class="tag">Tokio</span><span class="tag">Azure</span><span class="tag">Statistics</span></div>
+        <div class="metrics">
+          <div class="metric"><b data-count="29520" data-sep="1">0</b><span>Benchmark runs</span></div>
+          <div class="metric"><b data-count="14">0</b><span>Azure VMs</span></div>
+          <div class="metric"><b data-count="8">0</b><span>Metrics collectors</span></div>
+          <div class="metric"><b data-count="1.66" data-dec="2" data-suffix="×">0</b><span>Cardinality vs lock cost</span></div>
         </div>
-    </section>
+        <a class="plink" href="https://github.com/Saksham932007/RustRedis" target="_blank" rel="noopener">View on GitHub <span class="arr">→</span></a>
+      </article>
+    </div>
+  </div>
+</section>
 
-    <!-- Projects Section -->
-    <section id="projects">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-number">02</div>
-                <h2>Featured Projects</h2>
-                <p class="section-description">
-                    Production-scale systems built from first principles.
-                </p>
-            </div>
-            
-            <div class="projects-grid">
-                <!-- RustRedis -->
-                <div class="project-card">
-                    <div class="project-tech">
-                        <span class="tech-tag">Rust</span>
-                        <span class="tech-tag">Tokio</span>
-                        <span class="tech-tag">DashMap</span>
-                        <span class="tech-tag">RESP</span>
-                    </div>
-                    <h3>RustRedis</h3>
-                    <p>
-                        Production-grade async Redis-compatible server with 30+ commands across 4 data types, 
-                        AOF persistence, and Pub/Sub. Benchmarked against Valkey 8.1.4 with superior performance.
-                    </p>
-                    <div class="project-metrics">
-                        <div class="metric">
-                            <span class="metric-value">68,401</span>
-                            <span class="metric-label">Peak ops/s</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-value">64-78%</span>
-                            <span class="metric-label">Lower p99</span>
-                        </div>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Saksham932007/RustRedis" target="_blank" class="project-link">
-                            View Code →
-                        </a>
-                    </div>
-                </div>
+<!-- ================= RESEARCH ================= -->
+<section id="research">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow reveal">03 · Research</div>
+      <h2 class="reveal" style="--d:.05s">Measuring what observability really costs.</h2>
+    </div>
 
-                <!-- x86 Kernel -->
-                <div class="project-card">
-                    <div class="project-tech">
-                        <span class="tech-tag">C</span>
-                        <span class="tech-tag">x86 Assembly</span>
-                        <span class="tech-tag">NASM</span>
-                        <span class="tech-tag">QEMU</span>
-                    </div>
-                    <h3>Advanced x86 Kernel</h3>
-                    <p>
-                        32-bit operating system from scratch with two-stage bootloader, protected mode, 
-                        GDT/IDT, IRQ routing, paging, heap allocator, and hardware drivers.
-                    </p>
-                    <div class="project-metrics">
-                        <div class="metric">
-                            <span class="metric-value">&lt;500ms</span>
-                            <span class="metric-label">Boot time</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-value">&lt;1ms</span>
-                            <span class="metric-label">IRQ latency</span>
-                        </div>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Saksham932007/Advanced-Kernel" target="_blank" class="project-link">
-                            View Code →
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Titan -->
-                <div class="project-card">
-                    <div class="project-tech">
-                        <span class="tech-tag">Rust</span>
-                        <span class="tech-tag">TCP</span>
-                        <span class="tech-tag">Thread Pool</span>
-                        <span class="tech-tag">Docker</span>
-                    </div>
-                    <h3>Titan Web Server</h3>
-                    <p>
-                        Multi-threaded HTTP/1.1 web server with custom thread pool, zero-copy parsing, 
-                        and path-traversal protection. Handles 10,000+ concurrent connections.
-                    </p>
-                    <div class="project-metrics">
-                        <div class="metric">
-                            <span class="metric-value">10K+</span>
-                            <span class="metric-label">Connections</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-value">~8MB</span>
-                            <span class="metric-label">Memory</span>
-                        </div>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Saksham932007/Titan" target="_blank" class="project-link">
-                            View Code →
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <div class="card research reveal">
+      <div>
+        <div class="badge">◆ Preprint · submitted to Software: Practice and Experience (Oct 2026)</div>
+        <h3>Cardinality Before Contention</h3>
+        <div class="r-meta"><span>📅 2026</span><span>🔬 Independent research</span><span>📦 Archived on Zenodo</span></div>
+        <p>A factorial benchmark of per-command observability on a concurrent Rust/Tokio key-value server: 29,520 runs on 14 Azure VMs across 100–3,000 clients and 3 workloads, using randomized interleaved trials and run-clustered confidence intervals.</p>
+        <p>The finding: metric <strong style="color:var(--text)">cardinality</strong> mattered more than lock contention. Every table and figure is reproducible from the repository.</p>
+        <div class="cta-row" style="margin:1.6rem 0 0">
+          <a class="btn btn-primary" href="https://doi.org/10.5281/zenodo.23295261" target="_blank" rel="noopener">Read the preprint <span class="arr">↗</span></a>
+          <a class="btn" href="https://github.com/Saksham932007/RustRedis" target="_blank" rel="noopener">View code <span class="arr">↗</span></a>
         </div>
-    </section>
+        <p style="font-size:.8rem;color:var(--faint);margin:1.2rem 0 0">Not yet peer reviewed.</p>
+      </div>
 
-    <!-- Skills Section -->
-    <section id="skills">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-number">03</div>
-                <h2>Technical Skills</h2>
-                <p class="section-description">
-                    Expertise across systems programming, backend development, and distributed infrastructure.
-                </p>
-            </div>
-            
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <h3>Languages</h3>
-                    <div class="skill-list">
-                        <div class="skill-item">Rust (Expert)</div>
-                        <div class="skill-item">C (Expert)</div>
-                        <div class="skill-item">Python (Expert)</div>
-                        <div class="skill-item">Go (Intermediate)</div>
-                        <div class="skill-item">JavaScript/TypeScript</div>
-                        <div class="skill-item">C++ • C#</div>
-                    </div>
-                </div>
-
-                <div class="skill-category">
-                    <h3>Backend & Systems</h3>
-                    <div class="skill-list">
-                        <div class="skill-item">REST API • gRPC</div>
-                        <div class="skill-item">Node.js • FastAPI</div>
-                        <div class="skill-item">Tokio Async Runtime</div>
-                        <div class="skill-item">TCP/IP • WebSockets</div>
-                        <div class="skill-item">Linux Kernel Internals</div>
-                        <div class="skill-item">Concurrency Primitives</div>
-                    </div>
-                </div>
-
-                <div class="skill-category">
-                    <h3>Data & Infrastructure</h3>
-                    <div class="skill-list">
-                        <div class="skill-item">PostgreSQL (Expert)</div>
-                        <div class="skill-item">Redis (Expert)</div>
-                        <div class="skill-item">MongoDB</div>
-                        <div class="skill-item">Apache Kafka</div>
-                        <div class="skill-item">Docker • Kubernetes</div>
-                        <div class="skill-item">Prometheus • Grafana</div>
-                    </div>
-                </div>
-
-                <div class="skill-category">
-                    <h3>Human Languages</h3>
-                    <div class="skill-list">
-                        <div class="skill-item">Korean (Native/Professional)</div>
-                        <div class="skill-item">English (Fluent)</div>
-                        <div class="skill-item">Chinese (Beginner)</div>
-                    </div>
-                </div>
-            </div>
+      <div class="chart" style="align-self:center">
+        <h4>Throughput effect, percentage points</h4>
+        <div class="bar-row">
+          <div class="bar-label"><span>High-cardinality metric label (cost)</span><b>0.87 pp</b></div>
+          <div class="bar cost"><span style="--w:87%"></span></div>
         </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-number">04</div>
-                <h2>Get In Touch</h2>
-                <p class="section-description">
-                    Open to opportunities across Asia-Pacific. Immediate availability.
-                </p>
-            </div>
-            
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <span class="contact-label">Email</span>
-                        <span class="contact-value">
-                            <a href="mailto:sakshamkapoor810@gmail.com">sakshamkapoor810@gmail.com</a>
-                        </span>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <span class="contact-label">Phone</span>
-                        <span class="contact-value">+91-82878-12187</span>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <span class="contact-label">Location</span>
-                        <span class="contact-value">Delhi, India</span>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <span class="contact-label">GitHub</span>
-                        <span class="contact-value">
-                            <a href="https://github.com/Saksham932007" target="_blank">github.com/Saksham932007</a>
-                        </span>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <span class="contact-label">LinkedIn</span>
-                        <span class="contact-value">
-                            <a href="https://linkedin.com/in/sakshamkapoor-eng" target="_blank">linkedin.com/in/sakshamkapoor-eng</a>
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="availability">
-                    <h3>Availability</h3>
-                    <p>
-                        <strong>Immediate</strong><br>
-                        Open to relocation across Korea, China, Singapore, Japan, and remote opportunities.
-                        <br><br>
-                        <strong>Work Authorization:</strong> Indian Citizen
-                    </p>
-                </div>
-            </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>Global mutex → 64-way sharded map (saved)</span><b>0.52 pp</b></div>
+          <div class="bar save"><span style="--w:52%"></span></div>
         </div>
-    </section>
+        <p class="chart-note">The label cost <b>1.66×</b> more than the sharding saved.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>© 2026 Saksham Kapoor. Built with systems thinking.</p>
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow reveal">04 · Experience</div>
+      <h2 class="reveal" style="--d:.05s">Shipping, mentoring and leading.</h2>
+    </div>
+
+    <div class="timeline">
+      <div class="card t-item now reveal">
+        <div class="t-head">
+          <div><div class="t-role">Full-Stack Developer</div><div class="t-org">Software consultancy · client work under NDA</div></div>
+          <div class="t-date">Jan 2025 — Present</div>
         </div>
-    </footer>
+        <ul>
+          <li>Build frontend and backend features across multiple client products, from UI to database schemas, migrations, service layers and APIs.</li>
+          <li>Integrated a third-party API to deliver a customer-facing product-warranty feature.</li>
+          <li>Contributed a large share of the frontend and backend features for a product currently in pre-launch.</li>
+        </ul>
+      </div>
 
-    <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+      <div class="card t-item reveal" style="--d:.06s">
+        <div class="t-head">
+          <div><div class="t-role">Open Source Mentor</div><div class="t-org">GirlScript Summer of Code · DraftDeckAI</div></div>
+          <div class="t-date">Jul 2025 — Feb 2026</div>
+        </div>
+        <ul>
+          <li>Mentored contributors on an AI document-creation platform (Next.js, TypeScript, Supabase; 250+ forks): issue selection, setup and first pull requests.</li>
+          <li>Reviewed pull requests and gave feedback on code quality and conventions.</li>
+        </ul>
+      </div>
 
-        // Add intersection observer for fade-in animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+      <div class="card t-item reveal" style="--d:.12s">
+        <div class="t-head">
+          <div><div class="t-role">Campus Ambassador &amp; Mentor</div><div class="t-org">E-Cell, IIT Bombay</div></div>
+          <div class="t-date">2025</div>
+        </div>
+        <ul>
+          <li>Mentored groups of student founders, sharpening their startup ideas and advising how they would work in the real market.</li>
+          <li>Represented E-Cell IIT Bombay on campus and drove student participation.</li>
+        </ul>
+      </div>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
+      <div class="card t-item reveal" style="--d:.18s">
+        <div class="t-head">
+          <div><div class="t-role">Team Leader</div><div class="t-org">Entrepreneurship Cell · Institute of Management Education</div></div>
+          <div class="t-date">&nbsp;</div>
+        </div>
+        <ul><li>Led a 17-member team running the college's entrepreneurship cell.</li></ul>
+      </div>
+    </div>
 
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
-    </script>
+    <div class="edu">
+      <div class="card reveal"><h4>Education</h4><p><strong>Bachelor of Computer Applications (AI/ML)</strong><br>Chaudhary Charan Singh University · Expected July 2027</p></div>
+      <div class="card reveal" style="--d:.08s"><h4>Certifications</h4><p>Cisco Networking Academy (Python, Data Analytics, Junior Cybersecurity, Network Defense, Endpoint Security) · Harvard CS50 Python · Google Data Foundations · Job simulations: Goldman Sachs SWE, Accenture Data Analytics, BCG X GenAI</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow reveal">05 · Skills</div>
+      <h2 class="reveal" style="--d:.05s">What I work with.</h2>
+      <p class="lead reveal" style="--d:.1s">Grouped by how I've actually used them, in projects and in production.</p>
+    </div>
+
+    <div class="skills">
+      <div class="card skill reveal"><h3>Languages</h3><div class="chips">
+        <span class="chip" style="--c:0">C</span><span class="chip" style="--c:1">C++</span><span class="chip" style="--c:2">Rust</span><span class="chip" style="--c:3">C#</span><span class="chip" style="--c:4">Python</span><span class="chip" style="--c:5">TypeScript</span><span class="chip" style="--c:6">JavaScript</span><span class="chip" style="--c:7">Java</span><span class="chip" style="--c:8">SQL</span><span class="chip" style="--c:9">x86 assembly</span></div></div>
+
+      <div class="card skill reveal" style="--d:.07s"><h3>Systems</h3><div class="chips">
+        <span class="chip" style="--c:0">OS internals</span><span class="chip" style="--c:1">Memory management</span><span class="chip" style="--c:2">TCP/IP</span><span class="chip" style="--c:3">Concurrency</span><span class="chip" style="--c:4">Storage engines</span><span class="chip" style="--c:5">Raft consensus</span><span class="chip" style="--c:6">Fuzzing</span><span class="chip" style="--c:7">QEMU</span><span class="chip" style="--c:8">GDB</span></div></div>
+
+      <div class="card skill reveal" style="--d:.14s"><h3>Backend &amp; Web</h3><div class="chips">
+        <span class="chip" style="--c:0">Node.js</span><span class="chip" style="--c:1">Express</span><span class="chip" style="--c:2">REST APIs</span><span class="chip" style="--c:3">React</span><span class="chip" style="--c:4">Next.js</span><span class="chip" style="--c:5">MongoDB</span><span class="chip" style="--c:6">Schema design</span><span class="chip" style="--c:7">Migrations</span></div></div>
+
+      <div class="card skill reveal"><h3>Quality &amp; Delivery</h3><div class="chips">
+        <span class="chip" style="--c:0">Unit &amp; integration testing</span><span class="chip" style="--c:1">Crash-consistency testing</span><span class="chip" style="--c:2">GitHub Actions CI</span><span class="chip" style="--c:3">Git</span><span class="chip" style="--c:4">Docker</span><span class="chip" style="--c:5">Linux</span><span class="chip" style="--c:6">Benchmarking</span><span class="chip" style="--c:7">Prometheus / Grafana</span></div></div>
+
+      <div class="card skill reveal" style="--d:.07s"><h3>AI / ML</h3><div class="chips">
+        <span class="chip" style="--c:0">scikit-learn</span><span class="chip" style="--c:1">XGBoost</span><span class="chip" style="--c:2">TensorFlow / Keras</span><span class="chip" style="--c:3">pandas</span><span class="chip" style="--c:4">NumPy</span></div></div>
+
+      <div class="card skill reveal" style="--d:.14s"><h3>Languages (spoken)</h3><div class="chips">
+        <span class="chip" style="--c:0">English</span><span class="chip" style="--c:1">Korean · TOPIK Level 2</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="card contact reveal">
+      <div>
+        <div class="eyebrow">06 · Contact</div>
+        <h2>Let's talk.</h2>
+        <p class="lead">I'm looking for a paid software engineering internship in backend, systems or infrastructure. If you're building something that runs close to the metal, I'd love to hear about it.</p>
+        <div class="c-list">
+          <a class="c-item" href="mailto:sakshamkapoor810@gmail.com"><span class="k">Email</span><span class="v">sakshamkapoor810@gmail.com</span></a>
+          <a class="c-item" href="https://github.com/Saksham932007" target="_blank" rel="noopener"><span class="k">GitHub</span><span class="v">github.com/Saksham932007</span></a>
+          <a class="c-item" href="https://linkedin.com/in/sakshamkapoor-eng" target="_blank" rel="noopener"><span class="k">LinkedIn</span><span class="v">linkedin.com/in/sakshamkapoor-eng</span></a>
+          <div class="c-item"><span class="k">Location</span><span class="v">Delhi, India</span></div>
+        </div>
+        <div class="cta-row" style="margin:1.6rem 0 0">
+          <a class="btn btn-primary" href="mailto:sakshamkapoor810@gmail.com">Send an email <span class="arr">→</span></a>
+          <button class="btn" id="copyEmail" type="button">Copy email</button>
+        </div>
+      </div>
+      <div class="looking">
+        <h3>Currently looking for</h3>
+        <ul>
+          <li><strong>Role:</strong> paid SWE internship, backend / systems / infrastructure</li>
+          <li><strong>Where:</strong> Delhi NCR, Bengaluru, Hyderabad, Pune or remote</li>
+          <li><strong>Graduating:</strong> BCA (AI/ML), July 2027</li>
+          <li><strong>Strengths:</strong> C, Rust, C#, testing, benchmarking, debugging</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year">2026</span> Saksham Kapoor</span>
+    <span>Built by hand. Understand the layer below.</span>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+<div class="toast" id="toast" role="status">Email copied</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function(s,c){return (c||document).querySelector(s)};
+  var $$ = function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+
+  /* year */
+  var y=$('#year'); if(y) y.textContent=new Date().getFullYear();
+
+  /* mobile menu */
+  var menuBtn=$('#menuBtn'), links=$('#navLinks');
+  menuBtn.addEventListener('click',function(){
+    var open=links.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded',open);
+    menuBtn.textContent=open?'✕':'☰';
+  });
+  $$('#navLinks a').forEach(function(a){a.addEventListener('click',function(){
+    links.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');menuBtn.textContent='☰';
+  })});
+
+  /* scroll progress, back-to-top */
+  var prog=$('#progress'), toTop=$('#toTop');
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    prog.style.transform='scaleX('+(max>0?h.scrollTop/max:0)+')';
+    toTop.classList.toggle('show',h.scrollTop>700);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  toTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:reduce?'auto':'smooth'})});
+
+  /* active nav link */
+  var secs=$$('main section[id]'), navA=$$('#navLinks a');
+  var spy=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        navA.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id)});
+      }
+    });
+  },{rootMargin:'-45% 0px -50% 0px'});
+  secs.forEach(function(s){spy.observe(s)});
+
+  /* counters */
+  function fmt(n,dec,sep){
+    var s=n.toFixed(dec);
+    if(sep){var p=s.split('.');p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,',');s=p.join('.')}
+    return s;
+  }
+  function runCount(el){
+    if(el.dataset.done) return; el.dataset.done='1';
+    var target=parseFloat(el.dataset.count), dec=parseInt(el.dataset.dec||'0',10),
+        sep=el.dataset.sep, pre=el.dataset.prefix||'', suf=el.dataset.suffix||'';
+    if(reduce){el.textContent=pre+fmt(target,dec,sep)+suf;return}
+    var dur=1600, t0=null;
+    function step(t){
+      if(!t0)t0=t;
+      var p=Math.min((t-t0)/dur,1), e=1-Math.pow(1-p,4);
+      el.textContent=pre+fmt(target*e,dec,sep)+suf;
+      if(p<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* reveal on scroll (also triggers counters inside) */
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        $$('[data-count]',e.target).forEach(runCount);
+        if(e.target.hasAttribute('data-count')) runCount(e.target);
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  $$('.reveal, .skill').forEach(function(el){io.observe(el)});
+  /* safety net: if observer never fires, show content */
+  setTimeout(function(){ $$('.reveal:not(.in), .skill:not(.in)').forEach(function(el){
+    var r=el.getBoundingClientRect(); if(r.top<window.innerHeight){el.classList.add('in');$$('[data-count]',el).forEach(runCount)}
+  })},1800);
+
+  /* typed text */
+  var words=['operating systems','databases','distributed systems','benchmarks','backend services'];
+  var tEl=$('#typed');
+  if(reduce){tEl.textContent=words[0]}
+  else{
+    var wi=0,ci=words[0].length,del=true;
+    function tick(){
+      var w=words[wi];
+      if(del){ci--;tEl.textContent=w.slice(0,ci);
+        if(ci===0){del=false;wi=(wi+1)%words.length;setTimeout(tick,350);return}
+        setTimeout(tick,32);
+      }else{
+        ci++;tEl.textContent=words[wi].slice(0,ci);
+        if(ci===words[wi].length){del=true;setTimeout(tick,1800);return}
+        setTimeout(tick,70);
+      }
+    }
+    setTimeout(tick,2200); /* first word stays visible before erasing */
+  }
+
+  /* card spotlight */
+  $$('.card').forEach(function(c){
+    c.addEventListener('pointermove',function(e){
+      var r=c.getBoundingClientRect();
+      c.style.setProperty('--mx',(e.clientX-r.left)+'px');
+      c.style.setProperty('--my',(e.clientY-r.top)+'px');
+    });
+  });
+
+  /* copy email */
+  var cb=$('#copyEmail'), toast=$('#toast');
+  cb.addEventListener('click',function(){
+    var txt='sakshamkapoor810@gmail.com';
+    function done(){toast.classList.add('show');setTimeout(function(){toast.classList.remove('show')},1800)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,done)}
+    else{var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta);done()}
+  });
+})();
+</script>
 </body>
 </html>
