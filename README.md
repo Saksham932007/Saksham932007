@@ -118,17 +118,22 @@ Submitted to *Software: Practice and Experience* (October 2026). Preprint availa
 
 ### Software Developer Intern
 
-**Software Consultancy | July 2026 – Present**
+### Software Developer Intern — Wadhwa Consultancy
+*July 2026 – Present*
 
-Working on production software products across multiple client projects.
+Contributing to three cross-platform mobile applications targeting Android and iOS as part of a collaborative software engineering team.
 
-- Delivering end-to-end features across frontend, backend and database layers.
-- Designing database schemas, migrations, service layers and REST APIs.
-- Integrating third-party APIs into customer-facing product workflows.
-- Working across multiple codebases, adapting to different technology stacks and conventions.
-- Collaborating with developers through code reviews and feature delivery.
+**Engineering Contributions**
+- Flutter-based mobile application development and UI implementation.
+- Full-stack feature development across frontend and backend codebases.
+- Backend API development and database integration.
+- Connected-device integration between mobile applications and smart hardware.
+- Feature enhancements, debugging and collaborative code reviews.
+- **52 merged pull requests across five application and backend repositories.**
 
-**Technologies:** React, Next.js, Node.js, REST APIs, PostgreSQL, MongoDB and database migrations.
+**Technology Stack**
+
+`Flutter` `TypeScript` `Node.js` `NestJS` `PostgreSQL` `Prisma` `MongoDB` `Mongoose` `Jest` `AWS SDK` `Azure` `Cloudinary` `SWC`
 
 ### Open Source Mentor — GirlScript Summer of Code
 
