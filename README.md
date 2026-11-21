@@ -238,8 +238,8 @@ I regularly practise algorithmic problem-solving and participate in programming 
 
 Profiles:
 
-- [LeetCode](https://leetcode.com/)
-- [CodeChef](https://www.codechef.com/)
+- [LeetCode](https://leetcode.com/u/nVDiy5BM75/)
+- [CodeChef](https://www.codechef.com/users/sakshamkapoor)
 
 ---
 
